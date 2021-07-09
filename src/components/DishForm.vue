@@ -43,9 +43,8 @@
 </template>
 
 <script>
-import { createHelpers } from 'vuex-map-fields';
 
-// `fooModule` is the name of the Vuex module.
+import { createHelpers } from 'vuex-map-fields';
 const { mapFields } = createHelpers({
   getterType: 'menuM/getField',
   mutationType: 'menuM/updateField',
@@ -119,7 +118,6 @@ export default {
         ...mapActions('menuM',[
         'addToMenu',
         'editMenu'
-
         ])
 
     },
