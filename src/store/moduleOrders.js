@@ -1,7 +1,6 @@
 import pizzaApi from '@/api/pizzaApi'
-import { getField } from 'vuex-map-fields';
+import { getField, updateField } from 'vuex-map-fields';
 
-//updateField
 
 const state = () => ({
     orders: [],
@@ -39,6 +38,7 @@ const getters = {
 }
 
 const mutations = {
+    updateField,
     getAllOrders(state, payload) {
         state.orders = payload.data
     },
