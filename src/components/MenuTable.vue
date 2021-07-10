@@ -71,7 +71,7 @@ export default {
     },
     mounted() {
         this.getFullMenu()
-    },
+    }
 
 }
 </script>
