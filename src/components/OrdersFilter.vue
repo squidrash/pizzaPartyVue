@@ -9,7 +9,7 @@
         Адрес<br>
         <b-form-select  v-model="filters.address.value" :options="filters.address.options" ></b-form-select><br>
         Клиент<br>
-        <b-form-select  v-model="filters.customer.value" :options="filters.customer.options" ></b-form-select><br><br>
+        <b-form-select  v-model="filters.customers.value" :options="filters.customers.options" ></b-form-select><br><br>
         
         <b-button variant="success" size="sm" @click="filterOut">Применить</b-button>
         <b-button variant="danger" size="sm" @click="resetFilters">Сбросить</b-button>
@@ -67,7 +67,7 @@ export default{
                         },
                     ]
                 },
-                customer: {
+                customers: {
                     value: null,
                     options: [
                         {
@@ -91,7 +91,7 @@ export default{
         resetFilters() {
             this.filters.status.value = null
             this.filters.address.value = null
-            this.filters.customer.value = null
+            this.filters.customers.value = null
             this.getAllOrders()
 
         },

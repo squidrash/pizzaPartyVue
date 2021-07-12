@@ -16,6 +16,6 @@ export default new Vuex.Store({
   modules: {
     menuM: moduleMenu,
     ordersM: moduleOrders,
-    customerM: moduleCustomers
+    customersM: moduleCustomers
   }
 })

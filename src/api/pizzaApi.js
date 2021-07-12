@@ -39,13 +39,13 @@ export default {
                 request = `?status=${filters.status.value}`
                 isFirst = false;
             }
-            if (filters.customer.value != null) {
+            if (filters.customers.value != null) {
                 if (isFirst == true) {
-                    request = `?has_customer=${filters.customer.value}`
+                    request = `?has_customer=${filters.customers.value}`
                     isFirst = false;
                 }
                 else {
-                    request += `&has_customer=${filters.customer.value}`
+                    request += `&has_customer=${filters.customers.value}`
                 }
             }
             if (filters.address.value != null) {

@@ -1,6 +1,6 @@
 import pizzaApi from '@/api/pizzaApi'
-import { getField, } from 'vuex-map-fields';
-//updateField
+import { getField, updateField } from 'vuex-map-fields';
+
 
 const state = () => ({
     allCustomers: [],
@@ -68,6 +68,7 @@ const getters = {
 }
 
 const mutations = {
+    updateField,
     getAllCustomers(state, payload) {
         state.allCustomers = payload.data
     },
@@ -92,6 +93,7 @@ const mutations = {
     },
     editCustomer(state, payload) {
         state.customerVX.id = payload.customer.id;
+        console.log(`id в state ${state.customerVX.id}`);
         state.customerVX.name = payload.customer.name;
         state.customerVX.lastName = payload.customer.lastName;
         state.customerVX.phone = payload.customer.phone;

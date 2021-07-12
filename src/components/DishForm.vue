@@ -67,12 +67,12 @@ export default {
     },
     computed: {
         ...mapState('menuM',{
-        id: state => state.dishVX.id
+            id: state => state.dishVX.id
         }),
         ...mapFields({
-        name:'dishVX.name',
-        price:'dishVX.price',
-        isEdit:'isEdit'
+            name:'dishVX.name',
+            price:'dishVX.price',
+            isEdit:'isEdit'
         })
     },
     methods: {
