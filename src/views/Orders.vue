@@ -1,7 +1,7 @@
 <template>
   <div>
     <OrdersFilter/>
-    <OrdersTable/>
+    <OrdersTable :customerId='$route.params.id'/>
     <OrderStatusForm/>
     
   </div>

@@ -7,8 +7,8 @@
         <template #cell(discount)='data'>
             {{data.value}} %
         </template>
-        <template #cell(details)>
-            <b-button variant="primary" @click="testRouter"> Подробнее</b-button>
+        <template #cell(details)='row'>
+            <b-button variant="primary" @click="testRouter(row.item.id)"> Подробнее</b-button>
         </template>
         
         <template #cell(actionsWithCustomer)="row">
@@ -58,7 +58,7 @@ export default{
                 },
                 {
                     key: 'details',
-                    label: 'Детали заказа',
+                    label: 'Детали заказов',
                 },
                 {
                     key: 'actionsWithCustomer',
@@ -93,8 +93,10 @@ export default{
             'removeCustomer',
             'getAllCustomers'
         ]),
-        testRouter(){
-            this.$router.push('Orders')
+        testRouter(id){
+            //this.$router.push('Orders')
+            this.$router.push({path: `/orders/customer/${id}`})
+
         },
     },
     mounted(){

@@ -63,6 +63,9 @@
         </template>
 
      </b-table>
+     <b-button size="sm" v-show='this.visible' @click='resetCustomer' class="mr-2">
+        Сброс пользователя 
+    </b-button>
      
   </div>
   </template>
@@ -72,6 +75,7 @@
 
 export default{
     name:'OrdersTable',
+    props:['customerId'],
     data() {
         return {
             fields: [
@@ -106,7 +110,7 @@ export default{
                     sortable: true
                 }
             ],
-            fixed: true,
+            visible: false,
         }
     },
     computed: {
@@ -115,6 +119,11 @@ export default{
         })
     }, 
     methods: {
+        resetCustomer(){
+            this.visible = false
+            this.getAllOrders()
+            this.$router.push({path: `/orders`})
+        },
         editStatus(orderId, orderStatus) {
             this.changeOrderStatus(orderStatus)
             this.setOrderId(orderId)
@@ -122,11 +131,21 @@ export default{
         ...mapActions('ordersM', [
             'changeOrderStatus',
             'setOrderId',
-            'getAllOrders'
+            'getAllOrders',
+            'getCustomerOrders'
         ])
     },
     mounted(){
-        this.getAllOrders()
+        if(this.customerId === undefined || this.customerId === null)
+        {
+        console.log('If')
+            this.getAllOrders()
+        }
+        else{
+            console.log('else')
+            this.visible = true
+            this.getCustomerOrders(this.customerId)
+        }
     }
 }
   </script>

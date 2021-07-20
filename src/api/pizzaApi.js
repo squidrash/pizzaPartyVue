@@ -31,6 +31,10 @@ export default {
             return await axios
                 .get(url + `order/all/`)
         },
+        async getCustomerOrders(id) {
+            return await axios
+                .get(url + `order/customer/${id}`)
+        },
         async getFilteredOrders(filters) {
             // ?status=New&has_customer=false&has_address=false
             let request = "";

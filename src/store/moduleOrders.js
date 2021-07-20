@@ -18,18 +18,23 @@ const actions = {
     async getAllOrders({ commit },) {
         const getO = await pizzaApi.orders.getAllOrders();
         console.log(getO)
-        commit('getAllOrders', getO)
+        commit('getOrders', getO)
+    },
+    async getCustomerOrders({ commit }, id) {
+        const getO = await pizzaApi.orders.getCustomerOrders(id);
+        console.log(getO)
+        commit('getOrders', getO)
     },
     async getFilteredOrders({ commit }, filters) {
         const getO = await pizzaApi.orders.getFilteredOrders(filters);
         console.log(getO)
-        commit('getAllOrders', getO)
+        commit('getOrders', getO)
     },
     async changeStatus({ dispatch }, order) {
         const changeS = await pizzaApi.orders.changeStatus(order.id,
             order.newStatus)
         console.log(changeS)
-        await dispatch('getAllOrders')
+        await dispatch('getOrders')
     }
 }
 
@@ -39,7 +44,7 @@ const getters = {
 
 const mutations = {
     updateField,
-    getAllOrders(state, payload) {
+    getOrders(state, payload) {
         state.orders = payload.data
     },
     changeOrderStatus(state, status) {
