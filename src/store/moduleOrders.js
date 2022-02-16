@@ -33,8 +33,8 @@ const actions = {
     async changeStatus({ dispatch }, order) {
         const changeS = await pizzaApi.orders.changeStatus(order.id,
             order.newStatus)
-        console.log(changeS)
-        await dispatch('getOrders')
+        console.log(`action сhangeStatus ${changeS}`)
+        await dispatch('getAllOrders')
     }
 }
 

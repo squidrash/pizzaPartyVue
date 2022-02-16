@@ -1,13 +1,11 @@
 <template>
-  <div id="app">
+  <div id="app" class="wrapper">
     <div id="nav">
       <router-link to="/menu">Menu</router-link> |
       <router-link to="/orders">Orders</router-link> |
       <router-link to="/customers">Customers</router-link>
-
-      
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
