@@ -27,12 +27,16 @@ export default {
       let request = "?IsActive=true";
       return await axios.get(url + `menu/fullmenu/${request}`);
     },
+    async getArchiveMenu() {
+      let request = "?IsActive=false";
+      return await axios.get(url + `menu/fullmenu/${request}`);
+    },
     async getFilteredMenu(filters) {
       // ?Category=Pizza&IsActive=false
       let request = "?";
       let isFirst = true;
-      if (filters.isActive.value !== null) {
-        request += `IsActive=${filters.isActive.value}`;
+      if (filters.isActive !== null) {
+        request += `IsActive=${filters.isActive}`;
         isFirst = false;
       }
       if (isFirst !== true) {
@@ -45,22 +49,6 @@ export default {
     },
     async addToMenu(dish) {
       return await axios.post(url + "menu/add/", dish).catch(function(error) {
-        // if (error.response) {
-        //   // The request was made and the server responded with a status code
-        //   // that falls out of the range of 2xx
-        //   console.log(error.response.data);
-        //   console.log(error.response.status);
-        //   console.log(error.response.headers);
-        // } else if (error.request) {
-        //   // The request was made but no response was received
-        //   // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        //   // http.ClientRequest in node.js
-        //   console.log(error.request);
-        // } else {
-        //   // Something happened in setting up the request that triggered an Error
-        //   console.log("Error", error.message);
-        // }
-        // console.log(error.config);
         errorHandler(error);
       });
     },
@@ -68,22 +56,6 @@ export default {
       console.log(dish);
 
       return await axios.put(url + "menu/edit/", dish).catch(function(error) {
-        // if (error.response) {
-        //   // The request was made and the server responded with a status code
-        //   // that falls out of the range of 2xx
-        //   console.log(error.response.data);
-        //   console.log(error.response.status);
-        //   console.log(error.response.headers);
-        // } else if (error.request) {
-        //   // The request was made but no response was received
-        //   // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        //   // http.ClientRequest in node.js
-        //   console.log(error.request);
-        // } else {
-        //   // Something happened in setting up the request that triggered an Error
-        //   console.log("Error", error.message);
-        // }
-        // console.log(error.config);
         errorHandler(error);
       });
     },
@@ -94,6 +66,13 @@ export default {
   categories: {
     async getCategories() {
       return await axios.get(url + "dishcategory/getCategories");
+    },
+  },
+  specialOffers: {
+    async getSpecialOffers() {
+      return await axios.get(url + "specialOffer/all").catch(function(error) {
+        errorHandler(error);
+      });
     },
   },
   orders: {
@@ -155,4 +134,18 @@ export default {
       return await axios.delete(url + `customer/delete/${id}`);
     },
   },
+  // async images(image) {
+  //   return await axios
+  //     .post("https://localhost:5001/api/DishImage/addImages", image)
+  //     .catch(function(error) {
+  //       errorHandler(error);
+  //     });
+  // },
+  // async getImage() {
+  //   return await axios
+  //     .get("https://localhost:5001/api/DishImage/getImages?name=Гиро")
+  //     .catch(function(error) {
+  //       errorHandler(error);
+  //     });
+  // },
 };

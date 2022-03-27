@@ -6,12 +6,6 @@
       visible ? "Скрыть" : "Отобразить"
     }}</b-button>
     <b-form-group v-show="visible" label-cols-lg="2">
-      Статус блюд<br />
-      <b-form-select
-        v-model="filters.isActive.value"
-        :options="filters.isActive.options"
-      ></b-form-select
-      ><br />
       Категории<br />
       <b-form-select v-model="filters.category">
         <b-form-select-option :value="null">
@@ -19,7 +13,7 @@
         </b-form-select-option>
 
         <b-form-select-option
-          v-for="category in categoriesProp"
+          v-for="category in categories"
           :key="category.id"
           :value="category.id"
         >
@@ -38,34 +32,23 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "MenuFilters",
-  props: ["categoriesProp"],
+  props: ["categoriesProp", "dishStatusProp"],
   data() {
     return {
       visible: false,
       filters: {
-        isActive: {
-          value: true,
-          options: [
-            {
-              value: "true",
-              text: "Активные",
-            },
-            {
-              value: "false",
-              text: "Не активные",
-            },
-            {
-              value: null,
-              text: "Все блюда",
-            },
-          ],
-        },
         category: null,
+        isActive: this.dishStatusProp,
       },
     };
+  },
+  computed: {
+    ...mapState("categoriesM", {
+      categories: "categories",
+    }),
   },
   methods: {
     ...mapActions("menuM", ["getFullMenu", "getFilteredMenu"]),
@@ -73,7 +56,10 @@ export default {
       this.getFilteredMenu(this.filters);
     },
     resetFilters() {
-      this.filters.isActive.value = true;
+      // this.filters.isActive = null;
+      this.filters.isActive === true
+        ? (this.filters.isActive = true)
+        : (this.filters.isActive = false);
       this.filters.category = null;
       this.getFullMenu();
     },

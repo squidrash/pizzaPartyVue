@@ -3,6 +3,7 @@ import { getField, updateField } from "vuex-map-fields";
 
 const state = () => ({
   menu: [],
+  archiveMenu: [],
   dishVX: {
     id: 0,
     name: "",
@@ -18,10 +19,33 @@ const actions = {
     const getM = await pizzaApi.menu.getMenu();
     commit("getMenu", getM);
   },
+  async getArchiveMenu({ commit }) {
+    const getM = await pizzaApi.menu.getArchiveMenu();
+    commit("getArchiveMenu", getM);
+  },
+  // async getFilteredCurrentMenu({ commit }, filters){
+  //   let isActive = true;
+  //   const getM = await pizzaApi.menu.getFilteredMenu(isActive,filters);
+  //   commit("getMenu", getM);
+  // },
+  // async getFilteredCurrentMenu({ commit }, filters){
+  //   let isActive = false;
+  //   const getM = await pizzaApi.menu.getFilteredMenu(isActive,filters);
+  //   commit("getArchiveMenu", getM);
+  // },
   async getFilteredMenu({ commit }, filters) {
     const getM = await pizzaApi.menu.getFilteredMenu(filters);
-    commit("getMenu", getM);
+    if (filters.isActive === true) {
+      commit("getMenu", getM);
+    }
+    if (filters.isActive === false) {
+      commit("getArchiveMenu", getM);
+    }
   },
+  // async getFilteredMenu({ commit }, filters) {
+  //   const getM = await pizzaApi.menu.getFilteredMenu(filters);
+  //   commit("getMenu", getM);
+  // },
   async addToMenu({ dispatch }, dish) {
     const addTM = await pizzaApi.menu.addToMenu(dish);
     console.log(addTM);
@@ -35,7 +59,8 @@ const actions = {
   async removeDish({ dispatch }, id) {
     const removeD = await pizzaApi.menu.removeDish(id);
     console.log(removeD);
-    await dispatch("getFullMenu");
+    dispatch("getFullMenu");
+    dispatch("getArchiveMenu");
   },
 };
 const getters = {
@@ -45,6 +70,9 @@ const mutations = {
   updateField,
   getMenu(state, payload) {
     state.menu = payload.data;
+  },
+  getArchiveMenu(state, payload) {
+    state.archiveMenu = payload.data;
   },
   editDish(state, dish) {
     state.isEdit = dish.isEdit;

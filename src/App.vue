@@ -1,9 +1,10 @@
 <template>
   <div id="app" class="wrapper">
     <div id="nav">
-      <router-link to="/menu">Menu</router-link> |
-      <router-link to="/orders">Orders</router-link> |
-      <router-link to="/customers">Customers</router-link>
+      <router-link to="/menu/current">Меню</router-link> |
+      <router-link to="/offers">Акции</router-link>|
+      <router-link to="/orders">Заказы</router-link> |
+      <router-link to="/customers">Клиенты</router-link>
     </div>
     <router-view />
   </div>

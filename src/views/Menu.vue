@@ -1,20 +1,16 @@
 <template>
   <div>
-    <MenuTable/>
-    <DishForm/>
+    <div>
+      <router-link id="CurrentMenuLink" to="current">CurrentMenu</router-link> |
+      <router-link id="ArchiveMenuLink" to="archive">ArchiveMenu</router-link>
+    </div>
+
+    <router-view />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import MenuTable from '@/components/MenuTable.vue'
-import DishForm from '@/components/DishForm.vue'
-
 export default {
-  name: 'Menu',
-  components: {
-    MenuTable,
-    DishForm
-  }
-}
+  name: "Menu",
+};
 </script>

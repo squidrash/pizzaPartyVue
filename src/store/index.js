@@ -4,6 +4,7 @@ import moduleCustomers from "./moduleCustomers";
 import moduleMenu from "./moduleMenu";
 import moduleOrders from "./moduleOrders";
 import moduleCategories from "./moduleCategories";
+import moduleSpecialOffers from "./moduleSpecialOffers";
 
 Vue.use(Vuex);
 
@@ -16,5 +17,6 @@ export default new Vuex.Store({
     ordersM: moduleOrders,
     customersM: moduleCustomers,
     categoriesM: moduleCategories,
+    specialOffersM: moduleSpecialOffers,
   },
 });
