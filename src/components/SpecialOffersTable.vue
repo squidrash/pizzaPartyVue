@@ -14,13 +14,14 @@
       :specialOfferProp="specialOffer"
       :menuProp="menu"
       :isEditProp="isEdit"
+      :isNewOfferProp="isNewOffer"
     />
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
-import SpecialOfferForm from "./SpecialOfferForm2.vue";
+import SpecialOfferForm from "./OfferForm/FormOffer.vue";
 import SpecialOfferCard from "./SpecialOfferCard.vue";
 export default {
   name: "SpecialOffersTable",
@@ -44,6 +45,7 @@ export default {
       image:
         "https://localhost:5001/api/DishImage/getOfferImage?name=default.png",
       isEdit: false,
+      isNewOffer: false,
     };
   },
   computed: {
@@ -86,6 +88,7 @@ export default {
       // this.specialOffer = offer;
 
       this.isEdit = false;
+      this.isNewOffer = false;
       // this.testIsEdit = false;
 
       this.specialOffer.id = offer.id;
@@ -109,6 +112,7 @@ export default {
     },
     addNewOffer() {
       this.isEdit = true;
+      this.isNewOffer = true;
       // this.testIsEdit = true;
 
       this.specialOffer.id = 0;

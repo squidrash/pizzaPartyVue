@@ -40,7 +40,7 @@ import pizzaApi from "@/api/pizzaApi";
 import { mapState, mapActions } from "vuex";
 
 import MenuTable from "./MenuTable.vue";
-import DishForm from "./DishForm.vue";
+import DishForm from "./DishForm/FormDish.vue";
 import MenuFilters from "./MenuFilters.vue";
 export default {
   name: "CurrentMenu",
@@ -139,7 +139,10 @@ export default {
       // this.dish.image =
       //   "https://www.chefmarket.ru/blog/wp-content/uploads/2019/05/delicious-burger-e1558527589911.jpg";
 
-      this.$bvModal.show("dish-form");
+      this.$nextTick(function() {
+        this.$bvModal.show("dish-form");
+      });
+
       console.log("addNew конец");
       console.log(this.dish);
     },
@@ -168,14 +171,9 @@ export default {
           "https://www.chefmarket.ru/blog/wp-content/uploads/2019/05/delicious-burger-e1558527589911.jpg";
       }
 
-      // this.dishImage;
-
-      // setTimeout(this.testTimeout, 3000);
-      this.$bvModal.show("dish-form");
-    },
-    testTimeout() {
-      // this.$bvModal.show("dish-form");
-      this.$bvModal.show("dish-image-form");
+      this.$nextTick(function() {
+        this.$bvModal.show("dish-form");
+      });
     },
     remove(id) {
       console.log(id);
