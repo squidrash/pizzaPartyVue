@@ -1,7 +1,10 @@
 <template>
   <div class="navbar__block">
     <div class="navbar__row">
-      <router-link to="/menu/current" class="navbar__row_item">
+      <router-link to="/home" class="navbar__row_item row_item__icon">
+        Pizza Party
+      </router-link>
+      <router-link to="/menu" class="navbar__row_item">
         Меню
       </router-link>
       <router-link to="/offers" class="navbar__row_item">
@@ -23,6 +26,13 @@ export default { name: "NavBar" };
 
 <style>
 .navbar__block {
+  align-items: center;
+  display: flex;
+  height: 50px;
+  margin-bottom: 30px;
+
+  position: stiky;
+  top: 0;
 }
 .navbar__row {
   display: flex;
@@ -34,11 +44,19 @@ export default { name: "NavBar" };
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1 0 25%;
-  height: 35px;
-  border: 1px solid red;
+  flex: 1 0 22.5%;
+  /* height: 35px; */
+  color: #000;
+
+  border: 1px solid #efefef;
 }
+
 .navbar__row_item:hover {
-  background-color: green;
+  background-color: #efefef;
+  text-decoration: none;
+}
+
+.row_item__icon {
+  flex: 1 0 10%;
 }
 </style>
