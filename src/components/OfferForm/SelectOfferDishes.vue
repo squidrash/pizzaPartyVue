@@ -1,7 +1,7 @@
 <template>
   <div class="select__offer_dishes">
     <div v-if="isEdit === true">
-      <select style="max-width:200px;" v-model="selectDish">
+      <select :class="classObj" style="max-width:200px;" v-model="selectDish">
         <option value="null" disabled>Выберите блюдо</option>
         <optgroup
           v-for="category in menu"
@@ -59,6 +59,11 @@ export default {
         this.v.$touch();
         this.$emit("input", value);
       },
+    },
+    classObj() {
+      return {
+        form_item__error: this.v.$error,
+      };
     },
   },
   methods: {

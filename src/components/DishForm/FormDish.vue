@@ -44,8 +44,11 @@
         />
       </form>
       <FooterButtons @submit="handleSubmit" @cancel="resetModal">
-        <template v-slot:submit>
+        <template v-slot:submit v-if="isNewDishProp === true">
           Добавить
+        </template>
+        <template v-else v-slot:submit>
+          Изменить
         </template>
       </FooterButtons>
     </b-modal>
@@ -63,12 +66,12 @@ import InputName from "../FormComponent/InputName.vue";
 import InputPrice from "../FormComponent/InputPrice.vue";
 import TextareaDescription from "../FormComponent/TextareaDescription.vue";
 import InputImage from "../FormComponent/InputImage.vue";
-import FooterButtons from "../FormComponent/FooterButtons.vue";
+import FooterButtons from "../Buttons/FooterButtons.vue";
 
 export default {
   name: "DishForm",
   setup: () => ({ $v: useVuelidate() }),
-  props: { dishProp: Object, imagePathProp: String },
+  props: { dishProp: Object, imagePathProp: String, isNewDishProp: Boolean },
   components: {
     SelectDishCategory,
     InputName,
@@ -129,7 +132,7 @@ export default {
       // console.log(`this.imageProp ${this.imageProp}`);
     },
     setImage() {
-      this.imagePath = `https://localhost:5001/api/DishImage/getImages?name=${this.file.name}`;
+      this.imagePath = `https://localhost:5001/api/DishImage/getDishImage?name=${this.file.name}`;
       this.dish.image = this.file.name;
     },
     handleSubmit() {
@@ -145,8 +148,7 @@ export default {
     resetModal() {
       this.$v.$reset();
       this.file = null;
-      this.imagePath =
-        "https://www.chefmarket.ru/blog/wp-content/uploads/2019/05/delicious-burger-e1558527589911.jpg";
+      this.imagePath = `https://localhost:5001/api/DishImage/getDishImage?name=default.jpeg`;
       this.showOverlay = true;
       this.$nextTick(() => {
         this.$bvModal.hide("dish-form");

@@ -61,7 +61,6 @@ export default {
   background-color: #28a745;
 }
 .footer__btn_submit:hover {
-  background-color: rgba(40, 167, 70);
   box-shadow: 0 0 0 0.2em rgba(40, 167, 70, 0.5);
 }
 </style>

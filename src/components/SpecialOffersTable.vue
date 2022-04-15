@@ -2,19 +2,21 @@
   <div class="special_offer__table">
     <div><b-button @click="addNewOffer">добавить</b-button></div>
 
-    <div
-      v-for="offer in specialOffers"
-      :key="offer.id"
-      @click="showOffer(offer)"
-    >
-      <SpecialOfferCard :specialOfferProp="offer" />
+    <div v-for="offer in specialOffers" :key="offer.id">
+      <SpecialOfferCard :specialOfferProp="offer" @showOffer="showOffer" />
     </div>
 
     <SpecialOfferForm
       :specialOfferProp="specialOffer"
+      :imagePathProp="imagePath"
       :menuProp="menu"
       :isEditProp="isEdit"
       :isNewOfferProp="isNewOffer"
+      @submit-offer="submitOffer"
+    />
+    <ModalConfirm
+      modalTitle="Удалить акцию?"
+      @submit-action="handleRemoveOffer"
     />
   </div>
 </template>
@@ -23,9 +25,11 @@
 import { mapState, mapActions } from "vuex";
 import SpecialOfferForm from "./OfferForm/FormOffer.vue";
 import SpecialOfferCard from "./SpecialOfferCard.vue";
+import ModalConfirm from "./ModalConfirm.vue";
+
 export default {
   name: "SpecialOffersTable",
-  components: { SpecialOfferForm, SpecialOfferCard },
+  components: { SpecialOfferForm, SpecialOfferCard, ModalConfirm },
   data() {
     return {
       specialOffer: {
@@ -40,10 +44,12 @@ export default {
         requiredNumberOfDish: 0,
         extraDish: null,
         numberOfExtraDish: 0,
+        image: "",
       },
+      imagePath: "",
       // specialOffer: null,
-      image:
-        "https://localhost:5001/api/DishImage/getOfferImage?name=default.png",
+      // image:
+      //   "https://localhost:5001/api/DishImage/getOfferImage?name=default.png",
       isEdit: false,
       isNewOffer: false,
     };
@@ -81,12 +87,16 @@ export default {
     },
   },
   methods: {
-    ...mapActions("specialOffersM", ["getSpecialOffers"]),
+    ...mapActions("specialOffersM", [
+      "getSpecialOffers",
+      "addOffer",
+      "editOffer",
+      "removeOffer",
+    ]),
     showOffer(offer) {
       // this.$bvModal.show("special-offer-form");
       // console.log(offer);
       // this.specialOffer = offer;
-
       this.isEdit = false;
       this.isNewOffer = false;
       // this.testIsEdit = false;
@@ -102,6 +112,13 @@ export default {
       this.specialOffer.requiredNumberOfDish = offer.requiredNumberOfDish;
       this.specialOffer.extraDish = offer.extraDish;
       this.specialOffer.numberOfExtraDish = offer.numberOfExtraDish;
+      this.specialOffer.image = offer.image;
+
+      if (offer.image !== "") {
+        this.imagePath = `https://localhost:5001/api/DishImage/getOfferImage?name=${offer.image}`;
+      } else {
+        this.imagePath = `https://localhost:5001/api/DishImage/getOfferImage?name=default.png`;
+      }
 
       // console.log(this.specialOffer);
       // this.specialOffer = offer;
@@ -126,6 +143,9 @@ export default {
       this.specialOffer.requiredNumberOfDish = 0;
       this.specialOffer.extraDish = null;
       this.specialOffer.numberOfExtraDish = 0;
+      this.specialOffer.image = "";
+
+      this.imagePath = "";
 
       // console.log(this.specialOffer);
       // this.specialOffer = offer;
@@ -133,6 +153,21 @@ export default {
         this.$bvModal.show("special-offer-form");
       });
       // this.$bvModal.show("special-offer-form");
+    },
+    submitOffer(offer) {
+      if (this.isNewOffer === true) {
+        console.log("добавить акцию");
+        this.addOffer(offer);
+      } else {
+        console.log("изменить акцию");
+        this.editOffer(offer);
+      }
+      console.log(offer);
+    },
+
+    handleRemoveOffer() {
+      this.$bvModal.hide("special-offer-form");
+      this.removeOffer(this.specialOffer.id);
     },
   },
   mounted() {

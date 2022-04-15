@@ -3,7 +3,7 @@
     <label for="description-input"> Описание</label>
     <textarea
       id="description-input"
-      class=" offer_input__description"
+      :class="classObj"
       :disabled="!isEdit"
       v-model.trim="description"
       @blur="v.$touch"
@@ -43,6 +43,12 @@ export default {
         this.v.$touch();
         this.$emit("input", value);
       },
+    },
+    classObj() {
+      return {
+        form_item__error: this.v.$error,
+        offer_input__description: true,
+      };
     },
   },
 };

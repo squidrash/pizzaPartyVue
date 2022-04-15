@@ -3,7 +3,7 @@
     <div class="inline_block  ">
       <input
         type="text"
-        class="input__offer_quantity"
+        :class="classObj"
         :disabled="!isEdit"
         min="1"
         id="offer-dish-number-input"
@@ -43,6 +43,12 @@ export default {
         this.v.$touch();
         this.$emit("input", value);
       },
+    },
+    classObj() {
+      return {
+        form_item__error: this.v.$error,
+        input__offer_quantity: true,
+      };
     },
   },
 };

@@ -35,13 +35,13 @@
           @mouseleave="showDishSlot = null"
         >
           <div class="menu__column menu__column_image">
-            <div class="menu__item" @click="ImageEdit(dish.image)">
+            <div class="menu__item">
               <b-img
                 rounded
                 :src="
                   dish.image !== ''
-                    ? `https://localhost:5001/api/DishImage/getImages?name=${dish.image}`
-                    : `https://www.chefmarket.ru/blog/wp-content/uploads/2019/05/delicious-burger-e1558527589911.jpg`
+                    ? `https://localhost:5001/api/DishImage/getDishImage?name=${dish.image}`
+                    : `https://localhost:5001/api/DishImage/getDishImage?name=default.jpeg`
                 "
                 alt=""
                 width="100px"
@@ -88,11 +88,6 @@ export default {
     return {
       showDishSlot: null,
     };
-  },
-  methods: {
-    ImageEdit(image) {
-      this.$emit("edit-image", image);
-    },
   },
 };
 </script>

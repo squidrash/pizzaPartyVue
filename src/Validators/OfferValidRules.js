@@ -24,7 +24,7 @@ export function offerValidRules(typeOffer) {
     required: helpers.withMessage("Введите описание", required),
   };
   result.typeOffer = {
-    required: helpers.withMessage("Выберите тип акции", required),
+    required: helpers.withMessage("Выберите тип", required),
   };
 
   if (typeOffer === "GeneralDiscount") {
@@ -41,10 +41,7 @@ export function offerValidRules(typeOffer) {
       ),
     };
     result.minOrderAmount = {
-      required: helpers.withMessage(
-        "Введите минимальную сумму заказа",
-        required
-      ),
+      required: helpers.withMessage("Введите сумму ", required),
       numeric: helpers.withMessage("Введите число", numeric),
       minValue: helpers.withMessage(
         () => "Минимальное значение 1",

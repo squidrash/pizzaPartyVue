@@ -42,8 +42,8 @@ export default {
       if (isFirst !== true) {
         request += "&";
       }
-      if (filters.category !== null) {
-        request += `Category=${filters.category}`;
+      if (filters.categoryId !== null) {
+        request += `Category=${filters.categoryId}`;
       }
       return await axios.get(url + `menu/fullmenu/${request}`);
     },
@@ -74,6 +74,27 @@ export default {
         errorHandler(error);
       });
     },
+    async addNewOffer(offer) {
+      return await axios
+        .post(url + "specialOffer/newOffer", offer)
+        .catch(function(error) {
+          errorHandler(error);
+        });
+    },
+    async editOffer(offer) {
+      return await axios
+        .put(url + "specialOffer/edit", offer)
+        .catch(function(error) {
+          errorHandler(error);
+        });
+    },
+    async removeOffer(id) {
+      return await axios
+        .delete(url + `specialOffer/delete/${id}`)
+        .catch(function(error) {
+          errorHandler(error);
+        });
+    },
   },
   orders: {
     async getAllOrders() {
@@ -86,34 +107,41 @@ export default {
       // ?status=New&has_customer=false&has_address=false
       let request = "";
       let isFirst = true;
-      if (filters.status.value != null) {
-        request = `?status=${filters.status.value}`;
+      if (filters.status != null) {
+        request = `?status=${filters.status}`;
         isFirst = false;
       }
-      if (filters.customers.value != null) {
+      if (filters.customers != null) {
         if (isFirst == true) {
-          request = `?has_customer=${filters.customers.value}`;
+          request = `?has_customer=${filters.customers}`;
           isFirst = false;
         } else {
-          request += `&has_customer=${filters.customers.value}`;
+          request += `&has_customer=${filters.customers}`;
         }
       }
-      if (filters.address.value != null) {
+      if (filters.address != null) {
         if (isFirst == true) {
-          request = `?has_address=${filters.address.value}`;
+          request = `?has_address=${filters.address}`;
           isFirst = false;
         } else {
-          request += `&has_address=${filters.address.value}`;
+          request += `&has_address=${filters.address}`;
         }
       }
       return await axios.get(url + `order/all/${request}`);
     },
+    async postNewOrder(dishes, addressId) {
+      let request = "";
+      if (addressId !== 0) {
+        request = `?addressId=${addressId}`;
+      }
+      return await axios.post(url + `order/create/${request}`, dishes);
+    },
     async changeStatus(id, status) {
       return await axios
         .put(url + `order/changestatus/?orderId=${id}&orderStatus=${status}`)
-        .catch((err) => {
-          console.log(err);
-          alert("Нельзя изменить статус на выбранный");
+        .catch(function(error) {
+          errorHandler(error);
+          return error;
         });
     },
   },
@@ -132,6 +160,16 @@ export default {
     },
     async removeCustomer(id) {
       return await axios.delete(url + `customer/delete/${id}`);
+    },
+  },
+  address: {
+    async findAddress(address) {
+      return await axios
+        .post(url + `address/find/`, address)
+        .catch(function(error) {
+          errorHandler(error);
+          return error;
+        });
     },
   },
   // async images(image) {

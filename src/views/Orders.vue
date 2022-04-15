@@ -1,25 +1,16 @@
 <template>
   <div>
-    <OrdersFilter/>
-    <OrdersTable :customerId='$route.params.id'/>
-    <OrderStatusForm/>
-    
+    <OrdersTab />
   </div>
 </template>
 
 <script>
-import OrdersTable from '@/components/OrdersTable.vue'
-import OrderStatusForm from '@/components/OrderStatusForm.vue'
-import OrdersFilter from '@/components/OrdersFilter.vue'
-
+import OrdersTab from "@/components/OrdersTab";
 
 export default {
-  name: 'Orders',
+  name: "Orders",
   components: {
-    OrdersTable,
-    OrderStatusForm,
-    OrdersFilter
-  }
-}
-
+    OrdersTab,
+  },
+};
 </script>

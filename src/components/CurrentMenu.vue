@@ -1,12 +1,15 @@
 <template>
   <div>
-    <MenuFilters :dishStatusProp="true" />
-
-    <div>
-      <b-button @click="addNewDish">Добавить блюдо</b-button>
+    <div class="flexbox_row">
+      <div class="flexbox_row_expanded">
+        <button class="green_btn" @click="addNewDish">Добавить блюдо</button>
+      </div>
+      <button class="purple_btn" v-b-toggle.menu-filters>Фильтры</button>
     </div>
 
-    <MenuTable :menu="menu" @edit-image="editImage">
+    <MenuFilters :dishStatusProp="true" />
+
+    <MenuTable :menu="menu">
       <template v-slot:column_options="slotProps">
         <b-button-group size="sm">
           <b-button
@@ -31,6 +34,7 @@
       :dish-prop="dish"
       @submit-dish="submitDish"
       :image-path-prop="imagePath"
+      :isNewDishProp="isNewDish"
     />
   </div>
 </template>
@@ -41,13 +45,13 @@ import { mapState, mapActions } from "vuex";
 
 import MenuTable from "./MenuTable.vue";
 import DishForm from "./DishForm/FormDish.vue";
-import MenuFilters from "./MenuFilters.vue";
+import MenuFilters from "./MenuFilters/MenuFilters.vue";
 export default {
   name: "CurrentMenu",
   components: { MenuTable, DishForm, MenuFilters },
   data() {
     return {
-      isEdit: false,
+      isNewDish: false,
       dish: {
         id: 0,
         productName: "",
@@ -80,12 +84,12 @@ export default {
       pizzaApi.images(formData);
     },
 
-    async getImage() {
-      const img = await pizzaApi.getImage();
-      // this.testImg2 = img.request.responseURL;
-      this.testImg2 = img.config.url;
-      // console.log(typeof img.data.result);
-    },
+    // async getImage() {
+    //   const img = await pizzaApi.getImage();
+    //   // this.testImg2 = img.request.responseURL;
+    //   this.testImg2 = img.config.url;
+    //   // console.log(typeof img.data.result);
+    // },
     ...mapActions("menuM", [
       "getFullMenu",
       "removeDish",
@@ -94,7 +98,7 @@ export default {
     ]),
     ...mapActions("categoriesM", ["getCategories"]),
     submitDish(dish) {
-      if (this.isEdit === false) {
+      if (this.isNewDish === true) {
         console.log("добавить блюдо");
         this.addToMenu(dish);
       } else {
@@ -102,21 +106,21 @@ export default {
         this.editMenu(dish);
       }
     },
-    editImage(image) {
-      if (image !== "") {
-        this.dish.image = `https://localhost:5001/api/DishImage/getImages?name=${image}`;
-      } else {
-        this.dish.image =
-          "https://www.chefmarket.ru/blog/wp-content/uploads/2019/05/delicious-burger-e1558527589911.jpg";
-      }
-      console.log(`currentmenu editImage ${this.dish.image}`);
-      // this.dish.image = image;
-      this.$bvModal.show("dish-image-form");
-    },
+    // editImage(image) {
+    //   if (image !== "") {
+    //     this.dish.image = `https://localhost:5001/api/DishImage/getDishImage?name=${image}`;
+    //   } else {
+    //     this.dish.image =
+    //       "https://www.chefmarket.ru/blog/wp-content/uploads/2019/05/delicious-burger-e1558527589911.jpg";
+    //   }
+    //   console.log(`currentmenu editImage ${this.dish.image}`);
+    //   // this.dish.image = image;
+    //   this.$bvModal.show("dish-image-form");
+    // },
     addNewDish() {
       console.log("addNew начало");
       console.log(this.dish);
-      this.isEdit = false;
+      this.isNewDish = true;
       this.dish.id = 0;
       this.dish.productName = "";
       this.dish.price = "";
@@ -147,7 +151,7 @@ export default {
       console.log(this.dish);
     },
     editDish(dish, categoryId) {
-      this.isEdit = true;
+      this.isNewDish = false;
 
       this.dish.id = dish.id;
       this.dish.productName = dish.productName;
@@ -156,19 +160,12 @@ export default {
       this.dish.description = dish.description;
       this.dish.image = dish.image;
       this.dish.category.id = categoryId;
-      // this.dish.image = dish.image;
       console.log(this.dish);
-      // if (dish.image !== "") {
-      //   this.dish.image = `https://localhost:5001/api/DishImage/getImages?name=${dish.image}`;
-      // } else {
-      //   this.dish.image =
-      //     "https://www.chefmarket.ru/blog/wp-content/uploads/2019/05/delicious-burger-e1558527589911.jpg";
-      // }
+
       if (dish.image !== "") {
-        this.imagePath = `https://localhost:5001/api/DishImage/getImages?name=${dish.image}`;
+        this.imagePath = `https://localhost:5001/api/DishImage/getDishImage?name=${dish.image}`;
       } else {
-        this.imagePath =
-          "https://www.chefmarket.ru/blog/wp-content/uploads/2019/05/delicious-burger-e1558527589911.jpg";
+        this.imagePath = `https://localhost:5001/api/DishImage/getDishImage?name=default.jpeg`;
       }
 
       this.$nextTick(function() {
