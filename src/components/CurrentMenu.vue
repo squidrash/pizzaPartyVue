@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flexbox_row">
+    <div class="flexbox_row stiky_block stiky_block_menu">
       <div class="flexbox_row_expanded">
         <button class="green_btn" @click="addNewDish">Добавить блюдо</button>
       </div>
@@ -184,4 +184,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.stiky_block_menu {
+  top: 50px;
+  /* z-index: 100; */
+}
+</style>

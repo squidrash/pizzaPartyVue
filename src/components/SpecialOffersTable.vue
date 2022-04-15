@@ -1,9 +1,23 @@
 <template>
-  <div class="special_offer__table">
-    <div><b-button @click="addNewOffer">добавить</b-button></div>
+  <div>
+    <div
+      class="flexbox_row stiky_block stiky_block_offer"
+      style="padding:10px; margin-bottom:10px"
+    >
+      <div class="flexbox_row_expanded" style="justify-content: left;">
+        <button class="green_btn" @click="addNewOffer">Добавить акцию</button>
+      </div>
+    </div>
 
-    <div v-for="offer in specialOffers" :key="offer.id">
-      <SpecialOfferCard :specialOfferProp="offer" @showOffer="showOffer" />
+    <div>
+      <div class="special_offer__table">
+        <SpecialOfferCard
+          v-for="offer in specialOffers"
+          :key="offer.id"
+          :specialOfferProp="offer"
+          @showOffer="showOffer"
+        />
+      </div>
     </div>
 
     <SpecialOfferForm
@@ -178,10 +192,11 @@ export default {
 
 <style>
 .special_offer__table {
-  border: 2px solid red;
+  /* border: 2px solid red; */
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 10px 10px 10px 20px;
 }
 .text_input {
   margin: 10px 0 10px 0;
@@ -190,5 +205,9 @@ export default {
 }
 .text_input:disabled {
   border: 1px solid red;
+}
+.stiky_block_offer {
+  top: 50px;
+  z-index: 100;
 }
 </style>

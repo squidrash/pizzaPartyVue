@@ -35,6 +35,7 @@ export default {
   position: sticky;
   top: 0;
   background-color: #fff;
+  z-index: 100;
 }
 
 #nav a.router-link-active {

@@ -94,8 +94,10 @@ export default {
 
 <style>
 .menu__category_block {
-  border: 2px solid red;
-  margin-bottom: 10px;
+  /* border: 2px solid red; */
+  margin-bottom: 5px;
+  box-shadow: 0 0 5px;
+  padding: 10px;
 }
 .menu__category_block:last-child {
   margin-bottom: 30px;
@@ -152,11 +154,4 @@ export default {
   padding-left: 20px;
   padding-right: 0px;
 }
-.menu__item {
-}
-
-/* .dish_description__column {
-}
-.dish_description__row {
-} */
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="select__offer_dishes">
     <div v-if="isEdit === true">
-      <select :class="classObj" style="max-width:200px;" v-model="selectDish">
+      <select :class="classObj" style="width:250px;" v-model="selectDish">
         <option value="null" disabled>Выберите блюдо</option>
         <optgroup
           v-for="category in menu"
@@ -86,9 +86,12 @@ export default {
 .input__offer_select_dish {
   border: 0px;
   border-bottom: 1px solid #ffffff;
+  box-shadow: 0 0 5px;
+  border-radius: 5px;
+  text-align: center;
   padding: 1px 0 0 4px;
   margin: 0 0 5px 0;
-  width: 200px;
+  width: 250px;
   height: 27px;
   color: #495057;
   /* padding: 6px 28px 6px 12px; */

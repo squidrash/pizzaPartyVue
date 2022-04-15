@@ -61,16 +61,17 @@
               specialOffer.typeOffer === 'ThreeForPriceTwo'
           "
         >
-          <div class="offer_column">
+          <div>
             <label for="main-dish-input"> Основное блюдо</label>
             <div class="offer_row" id="main-dish-input">
               <SelectOfferDish
-                class="offer_column"
+                class="offer_column offer__select_dish"
                 v-model="specialOffer.mainDish"
                 :menu="menu"
                 :v="$v.specialOffer.mainDish"
                 :isEdit="isEdit"
               />
+
               <InputOfferNumberOfDish
                 v-model="specialOffer.requiredNumberOfDish"
                 :v="$v.specialOffer.requiredNumberOfDish"
@@ -79,7 +80,7 @@
             </div>
           </div>
 
-          <div class="offer_column">
+          <div>
             <label for="extra-dish-input">Доп блюдо</label>
             <div class="offer_row" id="extra-dish-input">
               <div
@@ -87,7 +88,7 @@
                 v-if="specialOffer.typeOffer === 'ExtraDish'"
               >
                 <SelectOfferDish
-                  class="offer_column"
+                  class="offer_column offer__select_dish"
                   v-model="specialOffer.extraDish"
                   :menu="menu"
                   :v="$v.specialOffer.extraDish"
@@ -283,5 +284,8 @@ export default {
 }
 .offer_btns_remove {
   flex: 1 0 auto;
+}
+.offer__select_dish {
+  margin-right: 20px;
 }
 </style>

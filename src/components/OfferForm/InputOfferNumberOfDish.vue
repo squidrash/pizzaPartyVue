@@ -1,6 +1,6 @@
 <template>
   <div class="input__offer_number_of_dish">
-    <div class="inline_block  ">
+    <div class="flexbox_row ">
       <input
         type="text"
         :class="classObj"
@@ -60,11 +60,10 @@ export default {
   flex-direction: column;
   margin: 0 0 8px 0;
 }
-.inline_block {
-  display: inline-block;
-}
+
 .input__offer_quantity {
   max-width: 30px;
-  text-align: left;
+  text-align: center;
+  margin-right: 5px;
 }
 </style>

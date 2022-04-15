@@ -26,11 +26,12 @@
 .stiky_block {
   background-color: #fff;
   position: sticky;
-  top: 0;
+  /* top: 0; */
 
   align-items: center;
   padding: 10px;
   height: 50px;
+  z-index: 100;
 }
 small {
   color: red;
