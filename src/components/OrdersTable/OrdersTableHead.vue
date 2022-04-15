@@ -27,7 +27,8 @@ export default { name: "OrdersTableHead" };
   border-radius: 5px 5px 0 0;
   border-bottom: 1px solid #c9c8c8;
   position: sticky;
-  top: 50px;
+  top: 100px;
   background-color: #ffffff;
+  border-top: 1px solid #efefef;
 }
 </style>

@@ -11,7 +11,12 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: "/home",
+    redirect: "/menu/current",
+  },
+  {
     path: "/menu",
+    redirect: "/menu/current",
     name: "Menu",
     component: Menu,
     children: [

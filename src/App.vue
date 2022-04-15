@@ -27,16 +27,20 @@ export default {
   color: #2c3e50;
 }
 
-#nav {
-  padding: 20px 0;
-}
-
 #nav a {
   font-weight: bold;
   color: #2c3e50;
 }
+#nav {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+}
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+#nav a.router-link-active {
+  color: #fff;
+  background-color: #28a745;
+  text-decoration: none;
+  font-weight: bold;
 }
 </style>

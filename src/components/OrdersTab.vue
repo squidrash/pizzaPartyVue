@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flexbox_row stiky_block">
+    <div class="flexbox_row stiky_block stiky_block_order">
       <div class="flexbox_row_expanded" style="justify-content: left;">
         <button class="green_btn" @click="$bvModal.show('order-form')">
           новый заказ
@@ -55,4 +55,8 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+.stiky_block_order {
+  top: 50px;
+}
+</style>
