@@ -1,14 +1,22 @@
 <template>
-  <div id="app" class="wrapper">
+  <div id="app">
     <div id="nav">
-      <router-link to="/menu/current">Меню</router-link> |
-      <router-link to="/offers">Акции</router-link>|
-      <router-link to="/orders">Заказы</router-link> |
-      <router-link to="/customers">Клиенты</router-link>
+      <NavBar />
     </div>
-    <router-view />
+    <div class="wrapper">
+      <router-view />
+    </div>
   </div>
 </template>
+
+<script>
+import NavBar from "@/components/NavBar.vue";
+export default {
+  components: {
+    NavBar,
+  },
+};
+</script>
 
 <style>
 #app {
@@ -20,7 +28,7 @@
 }
 
 #nav {
-  padding: 30px;
+  padding: 20px 0;
 }
 
 #nav a {

@@ -1,14 +1,16 @@
 <template>
-  <div class="special_offer__card">
+  <div class="special_offer__card" @click="showOffer">
     <div class="special_offer__title">
-      {{ offer.name }}
+      {{ specialOfferProp.name }}
     </div>
     <div class="special_offer__promocode">
       <div class="special_offer__promocode_item">
-        {{ offer.promoCode }}
+        {{ specialOfferProp.promoCode }}
       </div>
     </div>
-    <div class="special_offer__img"><img :src="image" alt="" /></div>
+    <div class="special_offer__img">
+      <img :src="imagePath" alt="" />
+    </div>
   </div>
 </template>
 
@@ -16,12 +18,19 @@
 export default {
   name: "SpecialOfferCard",
   props: { specialOfferProp: Object },
-  data() {
-    return {
-      offer: this.specialOfferProp,
-      image:
-        "https://localhost:5001/api/DishImage/getOfferImage?name=default.png",
-    };
+  computed: {
+    imagePath() {
+      if (this.specialOfferProp.image !== "") {
+        return `https://localhost:5001/api/DishImage/getOfferImage?name=${this.specialOfferProp.image}`;
+      } else {
+        return `https://localhost:5001/api/DishImage/getOfferImage?name=default.png`;
+      }
+    },
+  },
+  methods: {
+    showOffer() {
+      this.$emit("showOffer", this.specialOfferProp);
+    },
   },
 };
 </script>

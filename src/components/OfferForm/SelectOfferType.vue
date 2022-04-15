@@ -4,6 +4,7 @@
     <div v-if="isEdit === true" class="select__offer_type_item">
       <select
         id="type-input"
+        :class="classObj"
         v-model="typeOffer"
         :disabled="!isEdit"
         @change="resetType"
@@ -18,7 +19,9 @@
           >{{ type.text }}</option
         >
       </select>
-      <small v-if="v.$error">{{ v.$errors[0].$message }}</small>
+      <div>
+        <small v-if="v.$error">{{ v.$errors[0].$message }}</small>
+      </div>
     </div>
 
     <div v-else class=" select__offer_type_disabled">
@@ -80,6 +83,11 @@ export default {
         this.$emit("input", value);
       },
     },
+    classObj() {
+      return {
+        form_item__error: this.v.$error,
+      };
+    },
   },
   filters: {
     typeOfferFilter(value) {
@@ -107,13 +115,14 @@ export default {
 <style>
 .select__offer_type {
   display: flex;
+  flex: 0 0 50%;
   /* flex-direction: column; */
   margin: 0 0 8px 0;
 }
-.select__offer_type_item {
-  display: flex;
-  flex-direction: column;
-}
+/* .select__offer_type_item {
+    display: flex;
+    flex-direction: column;
+  } */
 .select__offer_type_disabled {
   border: 1px solid #ffffff;
   padding: 0 0 0 3px;

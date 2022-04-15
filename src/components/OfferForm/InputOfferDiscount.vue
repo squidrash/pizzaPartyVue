@@ -1,16 +1,20 @@
 <template>
   <div class="input__offer_discount">
     <label for="discount-input"> Размер скидки</label>
-    <input
-      id="discount-input"
-      :disabled="!isEdit"
-      type="text"
-      v-model.number="discount"
-      @blur="v.$touch"
-      placeholder="Введите % скидки"
-      maxlength="2"
-      style="max-width:30px"
-    />
+    <div class="flexbox_row">
+      <input
+        :class="classObj"
+        id="discount-input"
+        :disabled="!isEdit"
+        type="text"
+        v-model.number="discount"
+        @blur="v.$touch"
+        maxlength="2"
+        style="max-width:30px"
+      />
+      %
+    </div>
+
     <small v-if="v.$error">{{ v.$errors[0].$message }}</small>
   </div>
 </template>
@@ -40,6 +44,11 @@ export default {
         this.v.$touch();
         this.$emit("input", value);
       },
+    },
+    classObj() {
+      return {
+        form_item__error: this.v.$error,
+      };
     },
   },
 };

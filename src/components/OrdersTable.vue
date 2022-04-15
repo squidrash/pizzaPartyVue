@@ -1,141 +1,111 @@
 <template>
   <div>
-    <b-button
-      size="sm"
-      v-show="this.visible"
-      @click="resetCustomer"
-      class="mr-2"
-    >
+    <button v-show="visible" @click="resetCustomer" class="purple_btn">
       Сброс пользователя
-    </b-button>
-    <b-table small hover :items="items" :fields="fields">
-      <template #cell(status)="data">
-        {{ data.item.status }}<br />
-        <b-button
-          size="sm"
-          v-b-modal.order-status-form
-          variant="primary"
-          @click="editStatus(data.item.id, data.item.status)"
-          ><b-icon icon="pencil-square" aria-hidden="true"></b-icon>
-          Изменить</b-button
-        >
-      </template>
+    </button>
+    <PerPageOptions v-model="perPage" />
 
-      <template #cell(client)="data">
-        <template v-if="data.item.client != null">
-          {{ data.item.client.name }} {{ data.item.client.lastName }}<br />
-          Телефон: {{ data.item.client.phone }}
-        </template>
-        <template v-else>
-          Неизвестно
-        </template>
-      </template>
+    <PaginationNav v-model="page" :pages="pages" />
 
-      <template #cell(address)="data">
-        <template v-if="data.item.address != null">
-          г. {{ data.item.address.city }}, ул. {{ data.item.address.street }},
-          строение {{ data.item.address.numberOfBuild }}, подъезд
-          {{ data.item.address.numberOfEntrance }}
-        </template>
-        <template v-else>
-          Неизвестно
-        </template>
-      </template>
+    <div class="orders_table">
+      <OrdersTableHead />
 
-      <template #cell(dishes)="row">
-        <template v-if="row.item.dishes.length === 0">
-          Блюдо(а) было(и) удалено(ы)
-        </template>
-        <template v-else-if="row.item.dishes.length === 1">
-          {{ row.item.dishes[0].productName }}<br />
-        </template>
-        <template v-else>
-          {{ row.item.dishes[0].productName }},
-          {{ row.item.dishes[1].productName }}, ...<br />
-        </template>
-        <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-          {{ row.detailsShowing ? "Скрыть" : "Показать" }} детали
-        </b-button>
-      </template>
-
-      <template #row-details="row">
-        <b-card>
-          <template v-for="dish in row.item.dishes">
-            <b-row class="mb-2" :key="dish.id">
-              <b-col class="text-sm-right"><b>Название:</b></b-col>
-              <b-col>{{ dish.productName }}</b-col>
-              <b-col class="text-sm-right"><b>Цена:</b></b-col>
-              <b-col>{{ dish.price }}</b-col>
-              <b-col class="text-sm-right"><b>Количество:</b></b-col>
-              <b-col>{{ dish.quantity }}</b-col>
-            </b-row>
-          </template>
-        </b-card>
-      </template>
-    </b-table>
+      <OrdersTableBody
+        class="order__card"
+        v-for="order in displayedOrders"
+        :key="order.id"
+        :order="order"
+        @edit-status="editStatus"
+      />
+    </div>
+    <div v-show="perPage !== 5">
+      <PaginationNav v-model="page" :pages="pages" />
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
+import PerPageOptions from "@/components/PerPageOptions.vue";
+import PaginationNav from "@/components/PaginationNav.vue";
+import OrdersTableHead from "./OrdersTable/OrdersTableHead.vue";
+import OrdersTableBody from "./OrdersTable/OrdersTableBody.vue";
 
 export default {
   name: "OrdersTable",
-  props: ["customerId"],
+  components: {
+    PerPageOptions,
+    PaginationNav,
+    OrdersTableHead,
+    OrdersTableBody,
+  },
+  props: { customerId: Number },
+
   data() {
     return {
-      fields: [
-        {
-          key: "id",
-          label: "Id заказа",
-          sortable: true,
-        },
-        {
-          key: "status",
-          label: "Статус",
-          sortable: true,
-        },
-        {
-          key: "creatTime",
-          label: "Дата создания",
-          sortable: true,
-        },
-        {
-          key: "client",
-          label: "ФИО",
-          sortable: true,
-        },
-        {
-          key: "address",
-          label: "Адрес доставки",
-          sortable: true,
-        },
-        {
-          key: "dishes",
-          label: "Блюда",
-          sortable: true,
-        },
-      ],
+      orderDetails: {},
+      showDetails: false,
       visible: false,
+
+      page: 1,
+      perPage: 10,
+      perPageOptions: [5, 10, 20, 40],
+      pages: [],
     };
   },
   computed: {
     ...mapState("ordersM", {
-      items: "orders",
+      orders: "orders",
     }),
+    displayedOrders() {
+      return this.paginate(this.orders);
+    },
+  },
+  watch: {
+    orders() {
+      this.setPages();
+    },
+    perPage() {
+      this.setPages();
+    },
   },
   methods: {
+    setPages() {
+      this.page = 1;
+      this.pages = [];
+      let numberOfPages = Math.ceil(this.orders.length / this.perPage);
+      for (let i = 1; i <= numberOfPages; i++) {
+        this.pages.push(i);
+      }
+    },
+    setPerPage(option) {
+      this.perPage = option;
+      this.page = 1;
+      this.pages = [];
+      this.setPages();
+    },
+    paginate(orders) {
+      let page = this.page;
+      let perPage = this.perPage;
+      let from = page * perPage - perPage;
+      let to = page * perPage;
+      return orders.slice(from, to);
+    },
+
     resetCustomer() {
       this.visible = false;
       this.getAllOrders();
       this.$router.push({ path: `/orders` });
     },
-    editStatus(orderId, orderStatus) {
-      this.changeOrderStatus(orderStatus);
-      this.setOrderId(orderId);
+    editStatus(order) {
+      this.changeOrderStatusStorage(order.status);
+      this.setOrderId(order.id);
+      this.$nextTick(function() {
+        this.$bvModal.show("order-status-form");
+      });
     },
     ...mapActions("ordersM", [
-      "changeOrderStatus",
+      "changeOrderStatusStorage",
       "setOrderId",
       "getAllOrders",
       "getCustomerOrders",
@@ -143,13 +113,74 @@ export default {
   },
   mounted() {
     if (this.customerId === undefined || this.customerId === null) {
-      console.log("If");
       this.getAllOrders();
     } else {
-      console.log("else");
       this.visible = true;
       this.getCustomerOrders(this.customerId);
     }
   },
 };
 </script>
+
+<style>
+.orders_table {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  box-shadow: 0 0 5px;
+  font-size: 14px;
+  line-height: 1.3;
+  margin-bottom: 15px;
+}
+.order__card {
+  margin-bottom: 5px;
+  box-shadow: 0 0 5px;
+}
+.orders_table__row {
+  display: flex;
+  border-bottom: 1px solid #c9c8c8;
+  padding: 2px 5px;
+  align-items: center;
+}
+
+.orders_table__column {
+  display: flex;
+  flex-direction: column;
+  padding: 3px;
+  justify-content: center;
+}
+.orders_table__column_time {
+  flex: 0 1 10%;
+  min-width: 105px;
+}
+.orders_table__column_address {
+  flex: 1 1 30%;
+  min-width: 130px;
+}
+.orders_table__row_dishes {
+  margin-right: 2px;
+  align-items: center;
+  align-content: center;
+}
+
+.orders_table__column_customer {
+  flex: 1 1 25%;
+  min-width: 125px;
+}
+.orders_table__column_status {
+  flex: 1 1 20%;
+}
+.orders__status_btn {
+  height: 26px;
+  width: 26px;
+  background-color: #ffffff;
+  border: 0;
+  border-radius: 5px;
+  transition: 0.5s;
+}
+.orders__status_btn:hover {
+  background-color: #cbc8c8;
+  background-color: #282;
+  color: #fff;
+}
+</style>

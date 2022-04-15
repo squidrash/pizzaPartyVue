@@ -5,7 +5,7 @@
       id="name-input"
       type="text"
       autocomplete="off"
-      class="offer_input offer_input__name"
+      :class="classObj"
       v-model.trim="name"
       placeholder="Введите название"
       :disabled="!isEdit"
@@ -41,6 +41,13 @@ export default {
         this.v.$touch();
         this.$emit("input", value);
       },
+    },
+    classObj() {
+      return {
+        form_item__error: this.v.$error,
+        offer_input: true,
+        offer_input__name: true,
+      };
     },
   },
 };

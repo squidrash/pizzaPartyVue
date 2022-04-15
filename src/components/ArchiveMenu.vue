@@ -1,5 +1,6 @@
 <template>
   <div>
+    <button class="purple_btn" v-b-toggle.menu-filters>Фильтры</button>
     <MenuFilters :dishStatusProp="false" />
     <MenuTable :menu="menu" />
   </div>
@@ -9,7 +10,7 @@
 import { mapState, mapActions } from "vuex";
 
 import MenuTable from "./MenuTable.vue";
-import MenuFilters from "./MenuFilters.vue";
+import MenuFilters from "./MenuFilters/MenuFilters.vue";
 export default {
   name: "ArchiveMenu",
   components: {

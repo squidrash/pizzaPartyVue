@@ -24,14 +24,13 @@
 
         <div class="offer_row">
           <InputOfferPromocode
-            class="offer_row__item"
+            class="offer_column"
             v-model="specialOffer.promoCode"
             :v="$v.specialOffer.promoCode"
             :isEdit="isEdit"
           />
 
           <SelectOfferType
-            class="offer_row__item"
             v-model="specialOffer.typeOffer"
             :v="$v.specialOffer.typeOffer"
             :isEdit="isNewOfferProp"
@@ -113,8 +112,14 @@
           @setImage="setImage()"
         />
       </form>
-
-      <ButtonEdit v-if="isEdit === false" @click="isEdit = !isEdit" />
+      <div class="offer__btns" v-if="isEdit === false">
+        <div class="offer_btns_remove">
+          <ButtonRemove @click.native="handleRemove" />
+        </div>
+        <div>
+          <ButtonEdit @click.native="isEdit = !isEdit" />
+        </div>
+      </div>
 
       <div v-if="isEdit === true">
         <FooterButtons @submit="handleSubmit" @cancel="resetModal"
@@ -142,8 +147,10 @@ import InputOfferDiscount from "./InputOfferDiscount.vue";
 import SelectOfferDish from "./SelectOfferDishes.vue";
 import InputOfferNumberOfDish from "./InputOfferNumberOfDish.vue";
 import InputImage from "../FormComponent/InputImage.vue";
-import ButtonEdit from "../FormComponent/ButtonEdit.vue";
-import FooterButtons from "../FormComponent/FooterButtons.vue";
+import ButtonEdit from "../Buttons/ButtonEdit.vue";
+import ButtonRemove from "../Buttons/ButtonRemove.vue";
+
+import FooterButtons from "../Buttons/FooterButtons.vue";
 
 export default {
   components: {
@@ -157,11 +164,13 @@ export default {
     InputOfferNumberOfDish,
     InputImage,
     ButtonEdit,
+    ButtonRemove,
     FooterButtons,
   },
   name: "SpecialOfferForm",
   props: {
     specialOfferProp: Object,
+    imagePathProp: String,
     menuProp: Array,
     isEditProp: Boolean,
     isNewOfferProp: Boolean,
@@ -192,6 +201,9 @@ export default {
     overlayOff() {
       this.showOverlay = false;
       this.isEdit = this.isEditProp;
+      if (this.imagePathProp !== "") {
+        this.imagePath = this.imagePathProp;
+      }
       // console.log("что пришло в пропс");
       // console.log(this.isEditProp);
       // console.log("после присвоения");
@@ -205,6 +217,7 @@ export default {
     },
     setImage() {
       this.imagePath = `https://localhost:5001/api/DishImage/getOfferImage?name=${this.file.name}`;
+      this.specialOffer.image = this.file.name;
     },
     async resetOfferType() {
       console.log("resetOfferType");
@@ -220,11 +233,15 @@ export default {
       this.$v.specialOffer.$touch();
       if (this.$v.specialOffer.$error) return;
 
-      this.specialOffer;
       console.log(this.specialOffer);
+      this.$emit("submit-offer", this.specialOffer);
       this.$nextTick(() => {
         this.$bvModal.hide("special-offer-form");
       });
+    },
+    handleRemove() {
+      console.log(this.specialOffer.id);
+      this.$bvModal.show("modal-confirm");
     },
     resetModal() {
       this.imagePath =
@@ -261,29 +278,10 @@ export default {
   flex: 0 0 50%;
   /* margin-right: 30px; */
 }
-
-/* .hiden_text {
-  color: #fff;
-  padding: 0 0 0 7px;
-  position: absolute;
-  z-index: 2;
+.offer__btns {
+  display: flex;
 }
-.edit_button {
-  border: 0;
-  border-radius: 5px;
-  height: 34px;
-  width: 34px;
-  background-color: #fff;
-  text-align: left;
-  transition-property: background-color, width, color;
-  transition-duration: 0.5s, 1s, 0.5s;
-  box-sizing: border-box;
-  overflow: hidden;
-  color: #000;
+.offer_btns_remove {
+  flex: 1 0 auto;
 }
-.edit_button:hover {
-  width: 150px;
-  background-color: #282;
-  color: #fff;
-} */
 </style>

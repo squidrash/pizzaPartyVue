@@ -3,7 +3,7 @@
     <label for="amount-input">Минимальная сумма заказ</label>
     <input
       id="amount-input"
-      class="offer_input"
+      :class="classObj"
       :disabled="!isEdit"
       type="text"
       v-model.number="minOrderAmount"
@@ -42,6 +42,12 @@ export default {
         this.v.$touch();
         this.$emit("input", value);
       },
+    },
+    classObj() {
+      return {
+        form_item__error: this.v.$error,
+        offer_input: true,
+      };
     },
   },
 };

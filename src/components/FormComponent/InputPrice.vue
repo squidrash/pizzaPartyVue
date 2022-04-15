@@ -3,17 +3,19 @@
     <label for="price-input">Цена</label>
     <input
       id="price-input"
-      class="offer_input"
+      :class="classObj"
       :disabled="!isEdit"
       type="text"
       v-model.number="price"
       @blur="v.$touch"
       placeholder="Введите сумму"
       min="0"
-      style="max-width:120px"
+      style="max-width:130px"
       maxlength="6"
     />
-    <small v-if="v.$error">{{ v.$errors[0].$message }}</small>
+    <div>
+      <small v-if="v.$error">{{ v.$errors[0].$message }}</small>
+    </div>
   </div>
 </template>
 
@@ -43,6 +45,12 @@ export default {
         this.$emit("input", value);
       },
     },
+    classObj() {
+      return {
+        form_item__error: this.v.$error,
+        offer_input: true,
+      };
+    },
   },
 };
 </script>
@@ -51,6 +59,6 @@ export default {
 .input__price {
   display: flex;
   flex-direction: column;
-  margin: 0 0 8px 0;
+  margin: 0 10px 8px 0;
 }
 </style>
