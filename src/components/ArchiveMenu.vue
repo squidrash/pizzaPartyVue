@@ -5,19 +5,31 @@
       <button class="purple_btn" v-b-toggle.menu-filters>Фильтры</button>
     </div>
     <MenuFilters :dishStatusProp="false" />
-    <MenuTable :menu="menu" />
+    <MenuTableHead />
+    <div
+      v-for="category in menu"
+      :key="category.categoryId"
+      class="menu__category_block"
+    >
+      <div class="menu__category_name">{{ category.categoryName }}</div>
+      <div v-for="dish in category.dishes" :key="dish.id">
+        <MenuTableBody :dish="dish" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
+import MenuTableHead from "@/components/MenuTable/MenuTableHead.vue";
+import MenuTableBody from "@/components/MenuTable/MenuTableBody.vue";
 
-import MenuTable from "./MenuTable.vue";
 import MenuFilters from "./MenuFilters/MenuFilters.vue";
 export default {
   name: "ArchiveMenu",
   components: {
-    MenuTable,
+    MenuTableHead,
+    MenuTableBody,
     MenuFilters,
   },
   computed: {

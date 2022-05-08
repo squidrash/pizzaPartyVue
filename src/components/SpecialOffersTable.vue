@@ -195,7 +195,7 @@ export default {
   /* border: 2px solid red; */
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 10px 10px 10px 20px;
 }
 .text_input {

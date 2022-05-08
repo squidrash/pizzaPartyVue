@@ -23,7 +23,7 @@
     </button>
 
     <button
-      v-for="(pageNumber, index) in test"
+      v-for="(pageNumber, index) in toPage"
       :key="index"
       :disabled="page === pageNumber"
       @click="page = pageNumber"
@@ -81,7 +81,7 @@ export default {
       if (this.page < this.pages.length - 2) return true;
       return false;
     },
-    test() {
+    toPage() {
       let page = this.page;
       let pages = this.pages;
 

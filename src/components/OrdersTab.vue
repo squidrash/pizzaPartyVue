@@ -21,7 +21,7 @@
 <script>
 import { mapState } from "vuex";
 
-import OrdersTable from "./OrdersTable.vue";
+import OrdersTable from "./OrdersTable/OrdersTable.vue";
 import OrderForm from "./OrderForms/OrderForm.vue";
 
 import OrderStatusForm from "./OrderForms/OrderStatusForm.vue";

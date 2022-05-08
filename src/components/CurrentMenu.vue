@@ -9,46 +9,51 @@
 
     <MenuFilters :dishStatusProp="true" />
 
-    <MenuTable :menu="menu">
-      <template v-slot:column_options="slotProps">
-        <b-button-group size="sm">
-          <b-button
-            @click="editDish(slotProps.dish, slotProps.categoryId)"
-            variant="success"
-            size="sm"
-          >
-            <b-icon icon="pencil-square" aria-hidden="true"> </b-icon>
-          </b-button>
-          <b-button
-            @click="removeDish(slotProps.dish.id)"
-            size="sm"
-            variant="danger"
-          >
-            <b-icon icon="trash-fill" aria-hidden="true"> </b-icon>
-          </b-button>
-        </b-button-group>
-      </template>
-    </MenuTable>
-
+    <MenuTableHead />
+    <div
+      v-for="category in menu"
+      :key="category.categoryId"
+      class="menu__category_block"
+      @click="dish.category.id = category.categoryId"
+    >
+      <div class="menu__category_name">{{ category.categoryName }}</div>
+      <div v-for="dish in category.dishes" :key="dish.id">
+        <MenuTableBody
+          :dish="dish"
+          :dishOptions="true"
+          @edit-dish="editDish"
+          @remove-dish="handleRemove"
+        />
+      </div>
+    </div>
     <DishForm
       :dish-prop="dish"
       @submit-dish="submitDish"
       :image-path-prop="imagePath"
       :isNewDishProp="isNewDish"
     />
+    <ModalConfirm modalTitle="Удалить блюдо?" @submit-action="remove" />
   </div>
 </template>
 
 <script>
-import pizzaApi from "@/api/pizzaApi";
 import { mapState, mapActions } from "vuex";
 
-import MenuTable from "./MenuTable.vue";
+import MenuTableHead from "@/components/MenuTable/MenuTableHead.vue";
+import MenuTableBody from "@/components/MenuTable/MenuTableBody.vue";
+
 import DishForm from "./DishForm/FormDish.vue";
+import ModalConfirm from "@/components/ModalConfirm.vue";
 import MenuFilters from "./MenuFilters/MenuFilters.vue";
 export default {
   name: "CurrentMenu",
-  components: { MenuTable, DishForm, MenuFilters },
+  components: {
+    MenuTableHead,
+    MenuTableBody,
+    DishForm,
+    ModalConfirm,
+    MenuFilters,
+  },
   data() {
     return {
       isNewDish: false,
@@ -63,6 +68,7 @@ export default {
         },
         image: "",
       },
+      categoryId: 0,
       imagePath: "",
       file1: null,
       testImg: "",
@@ -75,21 +81,6 @@ export default {
     }),
   },
   methods: {
-    async testFile() {
-      // this.tesmages/${this.file1.name}`);
-      // this.testImg = require(`../../../DishImages/${this.file1.name}`);
-      console.log(this.file1);
-      const formData = new FormData();
-      formData.append("dishPic", this.file1, `${this.file1.name}`);
-      pizzaApi.images(formData);
-    },
-
-    // async getImage() {
-    //   const img = await pizzaApi.getImage();
-    //   // this.testImg2 = img.request.responseURL;
-    //   this.testImg2 = img.config.url;
-    //   // console.log(typeof img.data.result);
-    // },
     ...mapActions("menuM", [
       "getFullMenu",
       "removeDish",
@@ -106,17 +97,7 @@ export default {
         this.editMenu(dish);
       }
     },
-    // editImage(image) {
-    //   if (image !== "") {
-    //     this.dish.image = `https://localhost:5001/api/DishImage/getDishImage?name=${image}`;
-    //   } else {
-    //     this.dish.image =
-    //       "https://www.chefmarket.ru/blog/wp-content/uploads/2019/05/delicious-burger-e1558527589911.jpg";
-    //   }
-    //   console.log(`currentmenu editImage ${this.dish.image}`);
-    //   // this.dish.image = image;
-    //   this.$bvModal.show("dish-image-form");
-    // },
+
     addNewDish() {
       console.log("addNew начало");
       console.log(this.dish);
@@ -129,19 +110,6 @@ export default {
       this.dish.category.id = 0;
       this.dish.image = "";
       this.imagePath = "";
-      // this.dish = {
-      //   id: 0,
-      //   productName: "",
-      //   price: 0,
-      //   isActive: true,
-      //   description: "",
-      //   category: {
-      //     id: 0,
-      //   },
-      //   image: "",
-      // };
-      // this.dish.image =
-      //   "https://www.chefmarket.ru/blog/wp-content/uploads/2019/05/delicious-burger-e1558527589911.jpg";
 
       this.$nextTick(function() {
         this.$bvModal.show("dish-form");
@@ -150,7 +118,8 @@ export default {
       console.log("addNew конец");
       console.log(this.dish);
     },
-    editDish(dish, categoryId) {
+
+    editDish(dish) {
       this.isNewDish = false;
 
       this.dish.id = dish.id;
@@ -159,7 +128,6 @@ export default {
       this.dish.isActive = dish.isActive;
       this.dish.description = dish.description;
       this.dish.image = dish.image;
-      this.dish.category.id = categoryId;
       console.log(this.dish);
 
       if (dish.image !== "") {
@@ -172,9 +140,12 @@ export default {
         this.$bvModal.show("dish-form");
       });
     },
-    remove(id) {
-      console.log(id);
-      this.removeDish(id);
+    handleRemove(id) {
+      this.dish.id = id;
+      this.$bvModal.show("modal-confirm");
+    },
+    remove() {
+      this.removeDish(this.dish.id);
     },
   },
   mounted() {
@@ -188,5 +159,20 @@ export default {
 .stiky_block_menu {
   top: 50px;
   /* z-index: 100; */
+}
+.menu__category_block {
+  /* border: 2px solid red; */
+  margin-bottom: 5px;
+  box-shadow: 0 0 5px;
+  padding: 10px;
+}
+.menu__category_block:last-child {
+  margin-bottom: 30px;
+}
+.menu__category_name {
+  text-align: left;
+  padding: 10px;
+  padding-left: 40px;
+  font-weight: bold;
 }
 </style>

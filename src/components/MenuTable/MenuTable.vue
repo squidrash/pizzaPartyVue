@@ -1,26 +1,7 @@
 <template>
   <div>
-    <div class="menu__row">
-      <div class="menu__column menu__column_image">
-        <div class="menu__item">Изображение</div>
-      </div>
-      <div class="menu__column menu__column_name">
-        <div class="menu__item">Название</div>
-      </div>
-      <div class="menu__column menu__column_price">
-        <div class="menu__item">
-          Цена
-        </div>
-      </div>
-      <div class="menu__column menu__column_description">
-        <div class="menu__item">
-          Описание
-        </div>
-      </div>
-      <div class="menu__column menu__column_slot">
-        <div class="menu__item"></div>
-      </div>
-    </div>
+    <MenuTableHead />
+
     <div
       v-for="category in menu"
       :key="category.categoryId"
@@ -81,8 +62,10 @@
 </template>
 
 <script>
+import MenuTableHead from "@/components/MenuTable/MenuTableHead.vue";
 export default {
   name: "MenuTable2",
+  components: { MenuTableHead },
   props: ["menu"],
   data() {
     return {

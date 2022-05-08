@@ -38,7 +38,7 @@ export default {
 <style>
 .special_offer__card {
   position: relative;
-  margin: 0 10px 10px 0;
+  margin: 0 20px 20px 0;
   /* border: 2px solid grey; */
   border-radius: 15px;
   height: 160px;

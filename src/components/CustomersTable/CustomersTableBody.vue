@@ -46,12 +46,8 @@ export default {
     },
   },
   methods: {
-    test() {
-      console.log(this.customer);
-    },
     editCustomer() {
       this.$emit("edit-customer", this.customer);
-      return;
     },
     getInfo() {
       this.$emit("get-customer-orders", this.customer.id);

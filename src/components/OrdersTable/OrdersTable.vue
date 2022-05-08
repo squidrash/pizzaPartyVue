@@ -28,8 +28,8 @@
 import { mapState, mapActions } from "vuex";
 import PerPageOptions from "@/components/PerPageOptions.vue";
 import PaginationNav from "@/components/PaginationNav.vue";
-import OrdersTableHead from "./OrdersTable/OrdersTableHead.vue";
-import OrdersTableBody from "./OrdersTable/OrdersTableBody.vue";
+import OrdersTableHead from "./OrdersTableHead.vue";
+import OrdersTableBody from "./OrdersTableBody.vue";
 
 export default {
   name: "OrdersTable",

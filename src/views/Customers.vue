@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import CustomersTable from "@/components/CustomersTable.vue";
+import CustomersTable from "@/components/CustomersTable/CustomersTable.vue";
 
 export default {
   name: "Menu",
