@@ -50,12 +50,15 @@
     <div class="orders_table__row">
       <div class="flexbox_row_expanded" style="align-items: center;">
         <div>Список блюд:</div>
-
-        <ul class="dishes_list">
-          <li v-for="dish in order.dishes" :key="dish.id">
+        <div class="flexbox_row " style="max-width:450px; flex-wrap:wrap">
+          <div
+            class="dishes_list_item"
+            v-for="dish in order.dishes"
+            :key="dish.id"
+          >
             {{ dish.productName }}
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
 
       <div v-if="showDetails === false">
@@ -134,10 +137,15 @@ export default {
 </script>
 
 <style>
+.dishes_list {
+}
+.dishes_list_item {
+  margin: 0 5px 0 0;
+  padding: 2px;
+}
 ul.dishes_list {
   margin: 0;
   padding: 4px;
-  max-width: 680px;
 }
 
 ul.dishes_list li {

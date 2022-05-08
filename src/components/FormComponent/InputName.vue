@@ -1,13 +1,13 @@
 <template>
   <div class="input__name">
-    <label for="name-input">Название</label>
+    <label for="name-input">{{ labelName }}</label>
     <input
       id="name-input"
       type="text"
       autocomplete="off"
       :class="classObj"
       v-model.trim="name"
-      placeholder="Введите название"
+      :placeholder="placeholder"
       :disabled="!isEdit"
       @blur="v.$touch()"
     />
@@ -27,6 +27,11 @@ export default {
       type: Object,
       required: true,
     },
+    labelName: {
+      type: String,
+      default: "Название",
+    },
+    placeholder: { type: String, default: "Введите Название" },
     isEdit: {
       type: Boolean,
       required: true,

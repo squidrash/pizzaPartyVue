@@ -1,107 +1,138 @@
 <template>
-    <div>
-    <b-table small hover 
-    :items="items"
-    :fields="fields"
-    >
-        <template #cell(discount)='data'>
-            {{data.value}} %
-        </template>
-        <template #cell(details)='row'>
-            <b-button variant="primary" @click="testRouter(row.item.id)"> Подробнее</b-button>
-        </template>
-        
-        <template #cell(actionsWithCustomer)="row">
-            <b-button-group size="sm">
-                <b-button variant="success" v-b-modal.customer-form @click="editData(row.item)"> <b-icon icon="pencil-square" aria-hidden="true"></b-icon> Изменить</b-button>
-                <b-button variant="danger" @click="removeData(row.item.id)"> <b-icon icon="trash-fill" aria-hidden="true"></b-icon> Удалить</b-button>
-            </b-button-group>
-        </template>
-     </b-table>
-     <b-button size="sm" v-b-modal.customer-form variant="primary"><b-icon icon="clipboard-plus" aria-hidden="true"></b-icon> Добавить</b-button>
+  <div>
+    <div class="flexbox_row stiky_block stiky_block_customer">
+      <div class="flexbox_row_expanded" style="justify-content: left;">
+        <button class="green_btn" @click="handleAddCustomer">
+          <b-icon icon="clipboard-plus" aria-hidden="true"></b-icon> Новый
+          пользователь
+        </button>
+      </div>
     </div>
+
+    <div class="customer_table">
+      <CustomersTableHead />
+      <div v-for="customer in customers" :key="customer.id">
+        <CustomersTableBody
+          :customer="customer"
+          @edit-customer="handleEdit"
+          @get-customer-orders="toCustomerOrders"
+          @remove-customer="handleRemove"
+        />
+      </div>
+
+      <CustomersForm :customerProp="customer" @oks="handleCustomerForm" />
+      <ModalConfirm
+        modalTitle="Удалить пользователя?"
+        @submit-action="removeData"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+import CustomersTableHead from "@/components/CustomersTable/CustomersTableHead";
+import CustomersTableBody from "@/components/CustomersTable/CustomersTableBody";
+import CustomersForm from "@/components/CustomerForm.vue";
+import ModalConfirm from "@/components/ModalConfirm";
 
-import { mapState, mapActions } from 'vuex'
+export default {
+  name: "CustomersTable",
+  components: {
+    CustomersTableHead,
+    CustomersTableBody,
+    CustomersForm,
+    ModalConfirm,
+  },
+  data() {
+    return {
+      customer: {
+        id: 0,
+        name: "",
+        lastName: "",
+        phone: "",
+      },
+      isEditForm: false,
+    };
+  },
+  computed: {
+    ...mapState("customersM", {
+      customers: "allCustomers",
+    }),
+  },
+  methods: {
+    handleAddCustomer() {
+      this.customer.name = "";
+      this.customer.lastName = "";
+      this.customer.phone = "";
+      this.customer.id = 0;
 
-export default{
-    name:'CustomersTable',
-    data() {
-        return {
-            fields: [
-                {
-                    key: 'id',
-                    label: 'Id',
-                    sortable: true
-                },
-                {
-                    key: 'name',
-                    label: 'Имя',
-                    sortable: true
-                },
-                {
-                    key: 'lastName',
-                    label: 'Фамилия',
-                    sortable: true
-                },
-                {
-                    key: 'phone',
-                    label: 'Номер',
-                    sortable: true
-                },
-                {
-                    key: 'discount',
-                    label: 'Скидка клиента',
-                    sortable: true
-                },
-                {
-                    key: 'details',
-                    label: 'Детали заказов',
-                },
-                {
-                    key: 'actionsWithCustomer',
-                    label: ""
-                }
-
-            ]
-        }
+      this.isEditForm = false;
+      this.$nextTick(() => {
+        this.$bvModal.show("customer-form");
+      });
     },
-    computed: {
-        ...mapState('customersM',{
-            items:'allCustomers'
-        })
-    },
-    methods: {
-        editData(item) {
-            console.log("item");
-            console.log(item);
-            let editableCustomer = {
-                customer: item,
-                isEdit: true
-            }
-            console.log("editableCustomer");
-            console.log(editableCustomer)
-            this.editCustomer(editableCustomer)
-        },
-        removeData(id) {
-            this.removeCustomer(id)
-        },
-        ...mapActions('customersM',[
-            'editCustomer',
-            'removeCustomer',
-            'getAllCustomers'
-        ]),
-        testRouter(id){
-            //this.$router.push('Orders')
-            this.$router.push({path: `/orders/customer/${id}`})
+    handleEdit(customer) {
+      this.customer.name = customer.name;
+      this.customer.lastName = customer.lastName;
+      this.customer.phone = customer.phone;
+      this.customer.id = customer.id;
 
-        },
+      this.isEditForm = true;
+      this.$nextTick(() => {
+        this.$bvModal.show("customer-form");
+      });
     },
-    mounted(){
-        this.getAllCustomers();
-    }
-}
-
+    handleRemove(customer) {
+      this.customer = customer;
+      this.$bvModal.show("modal-confirm");
+    },
+    handleCustomerForm(customer) {
+      if (this.isEditForm === true) {
+        this.editCustomer(customer);
+      } else {
+        this.registrationCustomer(customer);
+      }
+    },
+    removeData() {
+      this.removeCustomer(this.customer.id);
+    },
+    toCustomerOrders(id) {
+      this.$router.push({ path: `/orders/customer/${id}` });
+    },
+    ...mapActions("customersM", [
+      "editCustomer",
+      "removeCustomer",
+      "getAllCustomers",
+      "registrationCustomer",
+    ]),
+  },
+  mounted() {
+    this.getAllCustomers();
+  },
+};
 </script>
+<style>
+.stiky_block_customer {
+  top: 50px;
+  margin-bottom: 5px;
+}
+.customer_table {
+  box-shadow: 0 0 5px;
+  border-radius: 5px;
+}
+.customers_table__column_name {
+  flex: 1 0 45%;
+}
+.customers_table__column_phone {
+  flex: 1 0 25%;
+}
+.customers_table__column_orders {
+  flex: 1 0 25%;
+  max-width: 160px;
+}
+.customers_table__column_remove {
+  flex: 1 0 auto;
+  max-width: 40px;
+}
+</style>

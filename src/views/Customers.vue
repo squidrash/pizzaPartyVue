@@ -1,18 +1,15 @@
 <template>
   <div>
-    <CustomersTable/>
-    <CustomerForm/>
+    <CustomersTable />
   </div>
 </template>
 <script>
-import CustomersTable from '@/components/CustomersTable.vue'
-import CustomerForm from '@/components/CustomerForm.vue'
+import CustomersTable from "@/components/CustomersTable.vue";
 
 export default {
-  name: 'Menu',
+  name: "Menu",
   components: {
     CustomersTable,
-    CustomerForm
-  }
-}
+  },
+};
 </script>

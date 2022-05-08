@@ -58,5 +58,6 @@ export default {
 <style>
 .stiky_block_order {
   top: 50px;
+  margin-bottom: 5px;
 }
 </style>
