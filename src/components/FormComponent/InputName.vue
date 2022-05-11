@@ -50,8 +50,6 @@ export default {
     classObj() {
       return {
         form_item__error: this.v.$error,
-        offer_input: true,
-        offer_input__name: true,
       };
     },
   },

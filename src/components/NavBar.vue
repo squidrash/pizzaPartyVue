@@ -36,6 +36,7 @@ export default { name: "NavBar" };
 }
 .navbar__row {
   display: flex;
+  min-height: 50px;
   width: 100%;
   /* justify-content: space-between; */
   align-content: center;

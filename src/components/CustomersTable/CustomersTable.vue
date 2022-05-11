@@ -8,10 +8,13 @@
         </button>
       </div>
     </div>
-
+    <Pagination
+      :items="customers"
+      @update-displayed-items="setDisplayedCustomers"
+    />
     <div class="customer_table">
       <CustomersTableHead />
-      <div v-for="customer in customers" :key="customer.id">
+      <div v-for="customer in displayedCustomers" :key="customer.id">
         <CustomersTableBody
           :customer="customer"
           @edit-customer="handleEdit"
@@ -35,6 +38,7 @@ import CustomersTableHead from "@/components/CustomersTable/CustomersTableHead";
 import CustomersTableBody from "@/components/CustomersTable/CustomersTableBody";
 import CustomersForm from "@/components/CustomerForm.vue";
 import ModalConfirm from "@/components/ModalConfirm";
+import Pagination from "@/components/Pagination/Pagination.vue";
 
 export default {
   name: "CustomersTable",
@@ -43,6 +47,7 @@ export default {
     CustomersTableBody,
     CustomersForm,
     ModalConfirm,
+    Pagination,
   },
   data() {
     return {
@@ -52,6 +57,7 @@ export default {
         lastName: "",
         phone: "",
       },
+      displayedCustomers: [],
       isEditForm: false,
     };
   },
@@ -61,6 +67,9 @@ export default {
     }),
   },
   methods: {
+    setDisplayedCustomers(customers) {
+      this.displayedCustomers = customers;
+    },
     handleAddCustomer() {
       this.customer.name = "";
       this.customer.lastName = "";
