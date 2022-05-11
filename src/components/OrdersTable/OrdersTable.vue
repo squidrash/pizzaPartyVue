@@ -3,9 +3,8 @@
     <button v-show="visible" @click="resetCustomer" class="purple_btn">
       Сброс пользователя
     </button>
-    <PerPageOptions v-model="perPage" />
 
-    <PaginationNav v-model="page" :pages="pages" />
+    <Pagination :items="orders" @update-displayed-items="setDisplayedOrders" />
 
     <div class="orders_table">
       <OrdersTableHead />
@@ -18,26 +17,23 @@
         @edit-status="editStatus"
       />
     </div>
-    <div v-show="perPage !== 5">
-      <PaginationNav v-model="page" :pages="pages" />
-    </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
-import PerPageOptions from "@/components/PerPageOptions.vue";
-import PaginationNav from "@/components/PaginationNav.vue";
+
+import Pagination from "@/components/Pagination/Pagination.vue";
+
 import OrdersTableHead from "./OrdersTableHead.vue";
 import OrdersTableBody from "./OrdersTableBody.vue";
 
 export default {
   name: "OrdersTable",
   components: {
-    PerPageOptions,
-    PaginationNav,
     OrdersTableHead,
     OrdersTableBody,
+    Pagination,
   },
   props: { customerId: Number },
 
@@ -47,49 +43,17 @@ export default {
       showDetails: false,
       visible: false,
 
-      page: 1,
-      perPage: 10,
-      perPageOptions: [5, 10, 20, 40],
-      pages: [],
+      displayedOrders: [],
     };
   },
   computed: {
     ...mapState("ordersM", {
       orders: "orders",
     }),
-    displayedOrders() {
-      return this.paginate(this.orders);
-    },
-  },
-  watch: {
-    orders() {
-      this.setPages();
-    },
-    perPage() {
-      this.setPages();
-    },
   },
   methods: {
-    setPages() {
-      this.page = 1;
-      this.pages = [];
-      let numberOfPages = Math.ceil(this.orders.length / this.perPage);
-      for (let i = 1; i <= numberOfPages; i++) {
-        this.pages.push(i);
-      }
-    },
-    setPerPage(option) {
-      this.perPage = option;
-      this.page = 1;
-      this.pages = [];
-      this.setPages();
-    },
-    paginate(orders) {
-      let page = this.page;
-      let perPage = this.perPage;
-      let from = page * perPage - perPage;
-      let to = page * perPage;
-      return orders.slice(from, to);
+    setDisplayedOrders(orders) {
+      this.displayedOrders = orders;
     },
 
     resetCustomer() {
