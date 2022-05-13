@@ -146,7 +146,37 @@ export default {
     },
   },
   customers: {
-    async getAllCustomers() {
+    // async getAllCustomers() {
+    //   return await axios.get(url + "customer/getall");
+    // },
+    async getAllCustomers(filters) {
+      if (filters !== undefined) {
+        let request = "";
+        let isFirst = true;
+        if (filters.name !== "") {
+          request = `?name=${filters.name}`;
+          isFirst = false;
+        }
+        if (filters.lastName !== "") {
+          if (isFirst == true) {
+            request = `?`;
+            isFirst = false;
+          } else {
+            request += `&`;
+          }
+          request += `lastName=${filters.lastName}`;
+        }
+        if (filters.phone !== "") {
+          if (isFirst == true) {
+            request = `?`;
+            isFirst = false;
+          } else {
+            request += `&`;
+          }
+          request += `phone=${filters.phone}`;
+        }
+        return await axios.get(url + `customer/getall/${request}`);
+      }
       return await axios.get(url + "customer/getall");
     },
     async getOneCustomer(id) {

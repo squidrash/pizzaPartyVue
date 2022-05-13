@@ -6,8 +6,8 @@ const state = () => ({
 });
 
 const actions = {
-  async getAllCustomers({ commit }) {
-    const getC = await pizzaApi.customers.getAllCustomers();
+  async getAllCustomers({ commit }, filters) {
+    const getC = await pizzaApi.customers.getAllCustomers(filters);
     console.log(getC);
     commit("getAllCustomers", getC);
   },

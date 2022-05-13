@@ -7,11 +7,14 @@
           пользователь
         </button>
       </div>
+      <button class="purple_btn" v-b-toggle.customer-search>Поиск</button>
     </div>
     <Pagination
       :items="customers"
       @update-displayed-items="setDisplayedCustomers"
     />
+    <CustomersFilter class="side_bar" />
+
     <div class="customer_table">
       <CustomersTableHead />
       <div v-for="customer in displayedCustomers" :key="customer.id">
@@ -39,6 +42,7 @@ import CustomersTableBody from "@/components/CustomersTable/CustomersTableBody";
 import CustomersForm from "@/components/CustomerForm.vue";
 import ModalConfirm from "@/components/ModalConfirm";
 import Pagination from "@/components/Pagination/Pagination.vue";
+import CustomersFilter from "@/components/CustomerFilter/CustomerFilter.vue";
 
 export default {
   name: "CustomersTable",
@@ -48,6 +52,7 @@ export default {
     CustomersForm,
     ModalConfirm,
     Pagination,
+    CustomersFilter,
   },
   data() {
     return {

@@ -35,6 +35,8 @@ export default {
     };
   },
   methods: {
+    ...mapActions("ordersM", ["getAllOrders", "getFilteredOrders"]),
+
     filterOut() {
       this.getFilteredOrders(this.filters);
     },
@@ -44,7 +46,6 @@ export default {
       this.filters.customers = null;
       this.getAllOrders();
     },
-    ...mapActions("ordersM", ["getAllOrders", "getFilteredOrders"]),
   },
 };
 </script>

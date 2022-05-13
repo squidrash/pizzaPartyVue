@@ -39,6 +39,7 @@ export default {
 .special_offer__card {
   position: relative;
   margin: 0 20px 20px 0;
+
   /* border: 2px solid grey; */
   border-radius: 15px;
   height: 160px;
@@ -87,8 +88,7 @@ export default {
   color: #000000;
   font-weight: bold;
 }
-.special_offer__img {
-}
+
 .special_offer__img img {
   max-width: 262px;
 }
